@@ -203,21 +203,92 @@
 \end{frame}
 
 \section[IoT]{Internet of Things}
-\subsection[Columns]{Multiple columns}
+
 \begin{frame}
-    \frametitle{Frame title}
+    \frametitle{Components}
     \begin{columns}
-        \begin{column}{0.5\linewidth}
-            Column one
+        \begin{column}[]{0.4\textwidth}
+            \begin{enumerate}
+                \item Node
+                \item Gateway
+                \item Cloud
+                \item Database
+            \end{enumerate}            
         \end{column}
-        \begin{column}{0.5\linewidth}
-            Column two
+        \begin{column}{0.6\textwidth}
+            \begin{figure}
+                \includegraphics[height=0.8\textheight]{architecture.jpg}
+            \end{figure}
         \end{column}
     \end{columns}
+\end{frame}
 
+\begin{frame}
+    \frametitle{Example: Power Cable Monitoring}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{itemize}
+                \item Long distance between towers
+                \item Connection hard/dangerous to install
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \begin{figure}
+                \includegraphics[width=\textwidth]{AdobeStock_133386757.jpeg}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \section{Device: ESP}
+
+\begin{frame}
+    \frametitle{What is a computer?}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{enumerate}
+                \item Processing Unit: ALU
+                    \begin{itemize}
+                        \item Arithmetic operation
+                        \item Signal processing
+                        \item Conditional decision
+                    \end{itemize}
+                \item Memory: hierachy
+                \item I/O
+                \begin{itemize}
+                    \item ADC
+                    \item USB
+                    \item Wireless
+                \end{itemize}
+            \end{enumerate}
+            ESP32 is a system on chip (SoC).
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \begin{figure}
+                \includegraphics[width=0.9\textwidth]{esp32-devkitc-functional-overview.jpg}
+                \caption*{(Espressif)}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Embedded Computer}
+    \begin{columns}
+        \begin{column}[]{0.4\textwidth}
+            \begin{itemize}
+                \item Does not have operating system.
+                \item Application is embedded into the firmware.
+            \end{itemize}
+        \end{column}
+        \begin{column}[]{0.6\textwidth}
+            \begin{figure}
+                \includegraphics[width=\textwidth]{esp32-devkitC-v4-pinout.png}
+                \caption*{(Espressif)}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
 
 \section{Implementation}
 
