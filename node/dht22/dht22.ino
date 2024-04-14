@@ -8,6 +8,10 @@
 #include <Arduino.h>
 #include <Servo.h>
 
+#include "DHT.h"
+#define DHTPIN 4
+#define DHTTYPE DHT22
+
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 
@@ -17,10 +21,7 @@
 // Fingerprint for demo URL, expires on June 2, 2021, needs to be updated well before this date
 // const uint8_t fingerprint[20] = { 0x40, 0xaf, 0x00, 0x6b, 0xec, 0x90, 0x22, 0x41, 0x8e, 0xa3, 0xad, 0xfa, 0x1a, 0xe8, 0x25, 0x41, 0x1d, 0x1a, 0x54, 0xb3 };
 
-const int trigPin = 0;
-const int echoPin = 4;
-
-float duration, distance;
+DHT dht(DHTPIN, DHTTYPE);
 
 ESP8266WiFiMulti WiFiMulti;
 
@@ -28,8 +29,7 @@ Servo myservo;
 
 void setup() {
   myservo.attach(14);
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  dht.begin();
 
   Serial.begin(115200);
   // Serial.setDebugOutput(true);
@@ -51,17 +51,15 @@ void setup() {
 void loop() {
   // wait for WiFi connection
   if ((WiFiMulti.run() == WL_CONNECTED)) {
-    digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
-    digitalWrite(trigPin, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
+    float t = dht.readTemperature(true);
+    if (isnan(t)) {
+      Serial.println("DHT failed");
+    }
+    else {
+      Serial.println("Temp: " + String(t));
+    }
 
-    duration = pulseIn(echoPin, HIGH);
-    distance = (duration*.0343)/2;
-    Serial.print("Distance: ");
-    Serial.println(distance);
-
+    
     std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
 
     // client->setFingerprint(fingerprint);
@@ -76,7 +74,7 @@ void loop() {
       https.addHeader("Content-Type", "application/json");
       Serial.print("[HTTPS] POST...\n");
       // start connection and send HTTP header
-      int httpCode = https.POST("{\"name\":\"ben\", \"num\":" + String(distance) + "}");
+      int httpCode = https.POST("{\"name\":\"ben\", \"num\":" + String(t) + "}");
 
       // httpCode will be negative on error
       if (httpCode > 0) {

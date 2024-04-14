@@ -2,3 +2,7 @@
 *.bbl
 *.run.xml
 *.snm
+*.aux
+*.bcf
+*.log
+*.out
