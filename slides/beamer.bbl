@@ -1,0 +1,67 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{inproceedings}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=5c39e20be6b4fc4dccf60491e26a198b}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={Xiao-yu},
+           giveni={X\bibinithyphendelim y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=499fdf216980a7351aa375d19f2e225a}{%
+           family={Rodriguez},
+           familyi={R\bibinitperiod},
+           given={Pablo},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e97f52cdd5f9dd7c242754dc35ae2028}{%
+           family={Biersack},
+           familyi={B\bibinitperiod},
+           given={Ernst},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b028303d60e7232d7a24fb6de78d0db9}
+      \strng{fullhash}{b028303d60e7232d7a24fb6de78d0db9}
+      \strng{bibnamehash}{b028303d60e7232d7a24fb6de78d0db9}
+      \strng{authorbibnamehash}{b028303d60e7232d7a24fb6de78d0db9}
+      \strng{authornamehash}{b028303d60e7232d7a24fb6de78d0db9}
+      \strng{authorfullhash}{b028303d60e7232d7a24fb6de78d0db9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-540-67506-8}
+      \field{journaltitle}{Lecture Notes in Computer Science}
+      \field{month}{04}
+      \field{title}{Performance Study of Satellite-Linked Web Caches and Filtering Policies}
+      \field{year}{2000}
+      \verb{doi}
+      \verb 10.1007/3-540-45551-5_49
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
