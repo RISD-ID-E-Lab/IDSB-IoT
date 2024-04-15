@@ -4,6 +4,7 @@
 - [Lecture slides](/slides/beamer.pdf) for the workshop.
 - [Source code](/server/) for the cloud server used in this workshop demo.
 - [Source code](/node/) for the IoT device in the demo.
+- ![](https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/05/ESP8266-NodeMCU-kit-12-E-pinout-gpio-pin.png?quality=100&strip=all&ssl=1)
 ### Links
 - [Installing ESP8266 board manager](https://github.com/esp8266/Arduino?tab=readme-ov-file#installing-with-boards-manager) to your Arduino IDE.
 - [Server](https://idsb-iot.onrender.com) for this workshop demo. 

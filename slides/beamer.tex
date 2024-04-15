@@ -12,6 +12,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{ulem}
+\usepackage{listings}
 \usepackage[backend=biber, citestyle=authoryear, sorting=none]{biblatex}
 \addbibresource{ref.bib}
 
@@ -109,6 +110,9 @@
 \setbeamercolor*{structure}{fg=black}
 
 \setbeamercolor{author in head/foot}{parent=title in head/foot}
+
+\lstdefinestyle{mystyle}{basicstyle=\ttfamily\scriptsize, numbers=left, frame=lines, breaklines=true}
+\lstset{style=mystyle}
 
 \begin{document}
 
@@ -246,11 +250,11 @@
         \item Node
         \item \st{Gateway}: your phone
         \item \st{Cloud}: a basic Express app
-        \item \st{Database}~
+        \item \st{Database}: MangoDB, mySQL
     \end{itemize}
 \end{frame}
 
-\section{Device: ESP}
+\section{Node: ESP}
 
 \begin{frame}
     \frametitle{What is a computer?}
@@ -302,8 +306,183 @@
 
 \section{Implementation}
 
+\subsection{ESP8266}
 \begin{frame}
-    \frametitle{What we are building today}
+    \frametitle{ESP8266}
+    \begin{figure}
+        \centering
+        \includegraphics[height=0.7\textheight]{ESP8266-NodeMCU-kit-12-E-pinout-gpio-pin.png}
+        \caption*{(Random Nerd Tutorials)}
+    \end{figure}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Checking and Basic Code Structure}
+    \begin{enumerate}
+        \item Connect ESP8266 to your computer and open Arduino IDE
+        \item Select board NodeMCU 1.0 (ESP12E) and choose the right port in Tools
+        \item Open File>Example>ESP8266>Blink and uplaod
+    \end{enumerate}
+    \begin{lstlisting}[language=c]
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);  
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(LED_BUILTIN, LOW);  
+  delay(1000);                      
+  digitalWrite(LED_BUILTIN, HIGH);  
+  delay(2000);   
+}                   
+    \end{lstlisting}
+    
+\end{frame}
+
+\subsection{Servo}
+\begin{frame}
+    \frametitle{Servo Motor}
+    \begin{columns}
+        \begin{column}[]{0.5\textwidth}
+            \begin{itemize}
+                \item Small
+                \item Powered by internal 3.3V
+                \item Easy to control
+                \item Only rotate 180 degree
+            \end{itemize}
+        \end{column}
+        \begin{column}[]{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{servo.jpg}
+                \caption*{(ElectronicWings)}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Sweep}
+    \begin{itemize}
+        \item Orange to GPIO14=D4, red to 3V3, brown to GND
+    \end{itemize}
+    \begin{lstlisting}[language=c]
+#include <Servo.h>
+Servo myservo;
+void setup() {
+    myservo.attach(14);
+}
+void loop() {
+    int pos = 0;
+    for (pos = 0; pos <= 180; pos += 1) {  
+        myservo.write(pos);  
+        delay(30);           
+    }
+    for (pos = 180; pos >= 0; pos -= 1) {  
+        myservo.write(pos);                  
+        delay(30);
+    }
+}
+    \end{lstlisting}
+\end{frame}
+
+\subsection{Ultrasonic Sensor}
+\begin{frame}[fragile]
+    \frametitle{Ultrasonic Sensor}
+    \begin{itemize}
+        \item Includes an emitter and a receiver.
+        \item Calculate distance by time taken to travel from emitter to receiver.
+        \item Ultrasonic is a mechanical wave
+    \end{itemize}
+    \begin{lstlisting}[language=c]
+#include <Servo.h>
+Servo myservo;
+const int trigPin = 0; //connect trig pin to GPIO0=D3
+const int echoPin = 4; //connect echo pin to GPIO4=D2
+
+float duration, distance;
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Setup and Serial Communication}
+    \begin{itemize}
+        \item Serial sends text to your computer
+        \item Tools>Serial Monitor>Set correct baud rate
+    \end{itemize}
+    \begin{lstlisting}[language=c, firstnumber=last]
+void setup() {
+    myservo.attach(14);
+    pinMode(trigPin, OUTPUT);
+    pinMode(echoPin, INPUT);
+    
+    Serial.begin(115200);
+    Serial.println("Hello World!");
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Calculate distance and send via serial}
+    \begin{lstlisting}{language=c, firstnumber=last}
+void loop() {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration*.0343)/2;
+    Serial.print("Distance: ");
+    Serial.println(distance);
+}
+    \end{lstlisting}
+\end{frame}
+
+\subsection{DHT22}
+\begin{frame}[fragile]
+    \frametitle{DHT22}
+    \begin{itemize}
+        \item An integrated temperature and humidity sensor
+        \item Easy to use with complete library
+    \end{itemize}
+    \begin{lstlisting}{language=c, firstnumber=1}
+#include <Servo.h>
+#include "DHT.h"
+
+#define DHTPIN 4 //GPPIO4=D2
+#define DHTTYPE DHT22
+
+Servo myservo;
+DHT dht(DHTPIN, DHTTYPE);
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Setup}
+    \begin{lstlisting}{language=c}
+void setup() {
+    myservo.attach(14);
+    dht.begin();
+    
+    Serial.begin(115200);
+    Serial.println("Hello World!");
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Loop}
+    \begin{lstlisting}{language=c}
+void loop() {
+    float t = dht.readTemperature(true);
+    if (isnan(t)) {
+      Serial.println("DHT failed");
+    }
+    else {
+      Serial.println("Temp: " + String(t));
+    }
+}
+    \end{lstlisting}
 \end{frame}
 
 \end{document}

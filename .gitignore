@@ -6,4 +6,4 @@
 *.bcf
 *.log
 *.out
-node_modules/*
+server/node_modules/*

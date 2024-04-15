@@ -1,0 +1,12 @@
+\frametitle{Loop}
+    \begin{lstlisting}{language=c}
+void loop() {
+    float t = dht.readTemperature(true);
+    if (isnan(t)) {
+      Serial.println("DHT failed");
+    }
+    else {
+      Serial.println("Temp: " + String(t));
+    }
+}
+    \end{lstlisting}
