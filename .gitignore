@@ -6,3 +6,4 @@
 *.bcf
 *.log
 *.out
+node_modules/*
