@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Internet}{3}{0}{1}
+\beamer@sectionintoc {2}{Internet of Things}{9}{0}{2}
+\beamer@sectionintoc {3}{Device: ESP}{13}{0}{3}
+\beamer@sectionintoc {4}{Implementation}{16}{0}{4}
