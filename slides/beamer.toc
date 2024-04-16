@@ -6,3 +6,4 @@
 \beamer@subsectionintoc {4}{2}{Servo}{19}{0}{4}
 \beamer@subsectionintoc {4}{3}{Ultrasonic Sensor}{21}{0}{4}
 \beamer@subsectionintoc {4}{4}{DHT22}{24}{0}{4}
+\beamer@subsectionintoc {4}{5}{HTTP}{27}{0}{4}

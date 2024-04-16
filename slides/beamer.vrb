@@ -1,12 +1,12 @@
-\frametitle{Loop}
-    \begin{lstlisting}{language=c}
+\frametitle{Try to figure it out!}
+    \begin{lstlisting}[numbers=none, caption={Pseudo code}]
 void loop() {
-    float t = dht.readTemperature(true);
-    if (isnan(t)) {
-      Serial.println("DHT failed");
-    }
-    else {
-      Serial.println("Temp: " + String(t));
-    }
+    if wifi connected
+        read sensor (DHT or ultrasonic)
+        float t = value read from sensor
+        post a json oject to the server //this is done
+        retrieve response from server //also done
+        if response = true
+            sweep motor once
 }
     \end{lstlisting}

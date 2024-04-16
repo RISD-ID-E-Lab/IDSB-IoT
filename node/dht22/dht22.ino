@@ -45,7 +45,7 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("CKAP", "ck10400672");
+  WiFiMulti.addAP("RISD-MiscDevices", "T3chn0l0gy!");
 }
 
 void loop() {

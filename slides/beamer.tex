@@ -111,7 +111,7 @@
 
 \setbeamercolor{author in head/foot}{parent=title in head/foot}
 
-\lstdefinestyle{mystyle}{basicstyle=\ttfamily\scriptsize, numbers=left, frame=lines, breaklines=true}
+\lstdefinestyle{mystyle}{basicstyle=\ttfamily\scriptsize, numbers=left, frame=lines, breaklines=true, showstringspaces=false}
 \lstset{style=mystyle}
 
 \begin{document}
@@ -422,7 +422,7 @@ void setup() {
 
 \begin{frame}[fragile]
     \frametitle{Calculate distance and send via serial}
-    \begin{lstlisting}{language=c, firstnumber=last}
+    \begin{lstlisting}[language=c, firstnumber=last]
 void loop() {
     digitalWrite(trigPin, LOW);
     delayMicroseconds(2);
@@ -445,7 +445,7 @@ void loop() {
         \item An integrated temperature and humidity sensor
         \item Easy to use with complete library
     \end{itemize}
-    \begin{lstlisting}{language=c, firstnumber=1}
+    \begin{lstlisting}[language=c, firstnumber=1]
 #include <Servo.h>
 #include "DHT.h"
 
@@ -459,7 +459,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 \begin{frame}[fragile]
     \frametitle{Setup}
-    \begin{lstlisting}{language=c}
+    \begin{lstlisting}[language=c, firstnumber=last]
 void setup() {
     myservo.attach(14);
     dht.begin();
@@ -472,7 +472,7 @@ void setup() {
 
 \begin{frame}[fragile]
     \frametitle{Loop}
-    \begin{lstlisting}{language=c}
+    \begin{lstlisting}[language=c, firstnumber=last]
 void loop() {
     float t = dht.readTemperature(true);
     if (isnan(t)) {
@@ -483,6 +483,151 @@ void loop() {
     }
 }
     \end{lstlisting}
+\end{frame}
+
+\subsection{HTTP}
+\begin{frame}[fragile]
+    \frametitle{Send HTTP request}
+    Files>Examples>ESP8266HTTPCient>BasicHttpsClient
+    \par Modify the following lines:
+
+    \begin{lstlisting}[language=c, firstnumber=37]
+    WiFiMulti.addAP("RISD-MiscDevices", "T3chn0l0gy");
+    \end{lstlisting}
+    
+    \begin{lstlisting}[language=c, firstnumber=46]
+    // client->setFingerprint(fingerprint);
+    // Or, if you happy to ignore the SSL certificate, then use the following line instead:
+    client->setInsecure();
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=c, firstnumber=53]
+    if (https.begin(*client, "https://idsb-iot.onrender.com")) {  // HTTPS
+    \end{lstlisting}
+
+    You should get a response of \verb|Hello World!|.
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{GET vs POST request}
+    \begin{columns}
+        \begin{column}[]{0.5\textwidth}
+            \begin{definition}[GET]
+                The GET method requests a representation of the specified resource. Requests using GET should only retrieve data. (Mozilla)
+            \end{definition}
+            
+        \end{column}
+        \begin{column}[]{0.5\textwidth}
+            \begin{definition}[POST]
+                The POST method submits an entity to the specified resource, often causing a change in state or side effects on the server. (Mozilla)
+            \end{definition}
+        \end{column}
+    \end{columns}
+    \begin{columns}
+        \begin{column}[]{0.5\textwidth}
+            
+            \begin{lstlisting}[numbers=none]
+GET /index.html
+            \end{lstlisting}
+        \end{column}
+        \begin{column}[]{0.5\textwidth}
+            
+            \begin{lstlisting}[numbers=none]
+POST /test HTTP/1.1
+Host: foo.example
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 27
+
+field1=value1&field2=value2
+
+            \end{lstlisting}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{GET requet}
+    \begin{lstlisting}[language=c, firstnumber=55, basicstyle=\ttfamily\tiny]
+        Serial.print("[HTTPS] GET...\n");
+        // start connection and send HTTP header
+        int httpCode = https.GET();
+  
+        // httpCode will be negative on error
+        if (httpCode > 0) {
+          // HTTP header has been send and Server response header has been handled
+          Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+  
+          // file found at server
+          if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+            String payload = https.getString();
+            Serial.println(payload);
+          }
+        } else {
+          Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
+        }
+  
+        https.end();
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{POST a JSON object}
+    \begin{lstlisting}[language=c,numbers=none]
+{
+    "name": "ben",
+    "num": 40
+}
+    \end{lstlisting}
+    \begin{lstlisting}[language=c, numbers=none]
+https.addHeader("Content-Type", "application/json");
+Serial.print("[HTTPS] POST...\n");
+// start connection and send HTTP header
+int httpCode = https.POST("{\"name\":\"ben\", \"num\":" + String(t) + "}");
+    \end{lstlisting}
+    What is \verb|String(t)|?
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Try to figure it out!}
+    \begin{lstlisting}[numbers=none, caption={Pseudo code}]
+void loop() {
+    if wifi connected
+        read sensor (DHT or ultrasonic)
+        float t = value read from sensor
+        post a json oject to the server //this is done
+        retrieve response from server //also done
+        if response = true
+            sweep motor once
+}
+    \end{lstlisting}
+\end{frame}
+
+\subsection*{}
+\begin{frame}
+    \frametitle{What does this device do?}
+    \begin{itemize}
+        \item Understand environment (sensor)
+        \item Take actions to change env (actuators)
+        \item Make decision (MCU)
+        \item Two-way communication with the server
+        \begin{itemize}
+            \item Data collection
+            \item Remote control
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section*{}
+\begin{frame}
+    \frametitle{Thank you!}
+    A recap
+    \begin{itemize}
+        \item HTTP request
+        \item 4 components of IoT
+        \item setup()\{\}, loop()\{\}
+        \item Serial communication
+        \item JSON 
+    \end{itemize}
 \end{frame}
 
 \end{document}
