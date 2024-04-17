@@ -10,6 +10,7 @@
 - [Server](https://idsb-iot.onrender.com) for this workshop demo. 
 - [Install DHT22 library](https://learn.adafruit.com/dht/using-a-dhtxx-sensor-with-arduino) to your Arduino IDE.
 - [ESP32-CAM install](https://randomnerdtutorials.com/upload-code-esp32-cam-mb-usb/)
+- [ESP32-CAM pinout](https://randomnerdtutorials.com/esp32-cam-video-streaming-face-recognition-arduino-ide/)
 ## Read more
 - [Layers of the internet](https://ilabxp.com/2019/08/03/the-5-layers-of-the-internet/)
 - [HTTP application protocol](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP)

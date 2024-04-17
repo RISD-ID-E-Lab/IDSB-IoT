@@ -6,6 +6,7 @@
 */
 
 #include <Arduino.h>
+#include <ESP32Servo.h>
 
 #include <WiFi.h>
 #include <WiFiMulti.h>
@@ -14,6 +15,12 @@
 
 #include <WiFiClientSecure.h>
 
+const int trigPin = 0;
+const int echoPin = 4;
+
+float duration, distance;
+
+Servo myservo;
 
 // Not sure if WiFiClientSecure checks the validity date of the certificate. 
 // Setting clock just to be sure...
@@ -40,6 +47,9 @@ void setClock() {
 WiFiMulti WiFiMulti;
 
 void setup() {
+  myservo.attach(14);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
 
   Serial.begin(115200);
   // Serial.setDebugOutput(true);
@@ -62,6 +72,17 @@ void setup() {
 }
 
 void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration*.0343)/2;
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
   WiFiClientSecure *client = new WiFiClientSecure;
   if(client) {
     // client -> setCACert(rootCACertificate);
@@ -73,22 +94,36 @@ void loop() {
   
       Serial.print("[HTTPS] begin...\n");
       if (https.begin(*client, "https://idsb-iot.onrender.com")) {  // HTTPS
-        Serial.print("[HTTPS] GET...\n");
+        https.addHeader("Content-Type", "application/json");
+        Serial.print("[HTTPS] POST...\n");
         // start connection and send HTTP header
-        int httpCode = https.GET();
+        int httpCode = https.POST("{\"name\":\"ben\", \"num\":" + String(distance) + "}");
   
         // httpCode will be negative on error
         if (httpCode > 0) {
           // HTTP header has been send and Server response header has been handled
-          Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+          Serial.printf("[HTTPS] POST... code: %d\n", httpCode);
   
           // file found at server
           if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
             String payload = https.getString();
             Serial.println(payload);
+            if (payload == "true") {
+            Serial.println("Rotating servo");
+            int pos = 0;
+            for (pos = 0; pos <= 180; pos += 1) {  // goes from 0 degrees to 180 degrees
+              // in steps of 1 degree
+              myservo.write(pos);  // tell servo to go to position in variable 'pos'
+              delay(30);           // waits 15ms for the servo to reach the position
+            }
+            for (pos = 180; pos >= 0; pos -= 1) {  // goes from 180 degrees to 0 degrees
+              myservo.write(pos);                  // tell servo to go to position in variable 'pos'
+              delay(30);                           // waits 15ms for the servo to reach the position
+            }
+            }
           }
         } else {
-          Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
+          Serial.printf("[HTTPS] POST... failed, error: %s\n", https.errorToString(httpCode).c_str());
         }
   
         https.end();
@@ -98,6 +133,7 @@ void loop() {
 
       // End extra scoping block
     }
+    
   
     delete client;
   } else {
@@ -105,6 +141,6 @@ void loop() {
   }
 
   Serial.println();
-  Serial.println("Waiting 10s before the next round...");
-  delay(10000);
+  Serial.println("Waiting 5s before the next round...");
+  delay(5000);
 }
