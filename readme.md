@@ -9,6 +9,7 @@
 - [Installing ESP8266 board manager](https://github.com/esp8266/Arduino?tab=readme-ov-file#installing-with-boards-manager) to your Arduino IDE.
 - [Server](https://idsb-iot.onrender.com) for this workshop demo. 
 - [Install DHT22 library](https://learn.adafruit.com/dht/using-a-dhtxx-sensor-with-arduino) to your Arduino IDE.
+- [ESP32-CAM install](https://randomnerdtutorials.com/upload-code-esp32-cam-mb-usb/)
 ## Read more
 - [Layers of the internet](https://ilabxp.com/2019/08/03/the-5-layers-of-the-internet/)
 - [HTTP application protocol](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP)
